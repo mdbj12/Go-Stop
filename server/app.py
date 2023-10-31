@@ -121,5 +121,5 @@ class UsersById(Resource):
 api.add_resource(UsersById, '/users/<int:id>')
 
 if __name__ == '__main__':
-    app.run(port=3335, debug=True, host='192.168.1.27')
+    app.run(port=3335, debug=True, host='192.168.1.155')
 # change host to your ip address
