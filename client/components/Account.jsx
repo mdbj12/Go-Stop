@@ -133,3 +133,7 @@ export default function Account({ navigation, route }){
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    
+})

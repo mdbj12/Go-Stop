@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ImageBackground, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ImageBackground, Alert, Pressable } from 'react-native';
 
 export default function Login({ route }){
     const [username, setUsername] = useState("")
@@ -17,25 +17,26 @@ export default function Login({ route }){
             onChangeText={text => setCreateUsername(text.toLowerCase())}
             value={createUsername}
             placeholder='Enter Username'
+            style={styles.createAccountInput}
         />
         <TextInput
             onChangeText={text => setCreateEmail(text.toLowerCase())}
             value={createEmail}
             placeholder='Enter Email'
+            style={styles.createAccountInput}
         />
         <TextInput
             onChangeText={text => setCreatePassword(text.toLowerCase())}
             value={createPassword}
             placeholder='Enter Password'
+            style={styles.createAccountInput}
         />
-        {errorMessage !== "" && <Text>{errorMessage}</Text>}
+        {errorMessage !== "" && <Text style={styles.loginErrorMessage}>{errorMessage}</Text>}
         <View>
             <View>
-                <Button
-                    title='Sign Up!'
-                    onPress={handleSignup}
-                    color='white'
-                />
+                <Pressable onPress={handleSignup}>
+                    <Text style={styles.signupText}>Sign Up!</Text>
+                </Pressable>
             </View>
         </View>
     </View>
@@ -60,7 +61,7 @@ export default function Login({ route }){
             headers: {
                 'Content-Type' : 'application/json'
             },
-            body: JSON.stringify(userObj),
+            body: JSON.stringify(userObj)
         })
         .then(
             // logging in issues
@@ -70,6 +71,8 @@ export default function Login({ route }){
                     route.params.onLogin(user)
                 } else if (res.status === 404) {
                     setErrorMessage('User does not exist!')
+                } else if (res.status === 405) {
+                    setErrorMessage('Error Logging In')
                 } else {
                     console.log("Error Occured")
                 }
@@ -99,7 +102,7 @@ export default function Login({ route }){
         })
         .then(
             async(res) => {
-                if (res.status === 200){
+                if (res.status === 201){
                     let user = await res.json()
                     route.params.onLogin(user)
                     Alert.alert('Signup Successfull!', 'Your account has been created')
@@ -109,39 +112,44 @@ export default function Login({ route }){
                     setErrorMessage('Email already used')
                 } else if (res.status === 422){
                     setErrorMessage('Please Enter a Password')
+                } else {
+                    console.log(error)
                 }
             }
         )
     }
 
     return (
-        <View>
+        <View style={styles.loginScreen}>
             <ImageBackground>
                 <View>
-                    <Text style={styles.title}>Go Stop!</Text>
-                    <TextInput
-                        onChangeText={text => setUsername(text.toLowerCase())}
-                        value={username}
-                        placeholder='Enter Username'
-                    />
-                    <TextInput
-                        onChangeText={text => setPassword(text.toLowerCase())}
-                        value={password}
-                        placeholder='Enter Password'
-                        secureTextEntry
-                    />
-                    <View>
-                        <View>
-                            <Button
-                                title='Login'
-                                onPress={handleLogin}
-                                color='white'
-                            />
-                        </View>
-                        <Button
-                            title='Create Account'
-                            onPress={showForm}
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title}>Go Stop!</Text>
+                    </View>
+                    <View style={styles.loginContainer}>
+                        <TextInput
+                            onChangeText={text => setUsername(text.toLowerCase())}
+                            value={username}
+                            placeholder='Enter Username'
+                            style={styles.loginDetails}
                         />
+                        <TextInput
+                            onChangeText={text => setPassword(text.toLowerCase())}
+                            value={password}
+                            placeholder='Enter Password'
+                            secureTextEntry
+                            style={styles.loginDetails}
+                        />
+                    </View>
+                    <View>
+                        <View style={styles.buttonContainer}>
+                            <Pressable style={styles.loginButton} onPress={handleLogin}>
+                                <Text style={styles.loginButtonText}>Login</Text>
+                            </Pressable>
+                            <Pressable style={styles.loginButton} onPress={showForm}>
+                                <Text style={styles.loginButtonText}>Create Account</Text>
+                            </Pressable>
+                        </View>
                     </View>
                 </View>
                 {isForm ? signupForm : null}
@@ -151,9 +159,63 @@ export default function Login({ route }){
 }
 
 const styles = StyleSheet.create({
+    loginScreen: {
+        backgroundColor: '#D8210B',
+        flex: 1,
+    },
+    titleContainer: {
+        marginTop: 100,
+        padding: 15,
+        alignSelf: 'center',
+        backgroundColor: '#263049',
+        borderRadius: 25,
+        width: 300,
+    },
     title: {
         fontSize: 40,
         textAlign: 'center',
-        marginTop: 90
+        color: 'white'
+    },
+    loginContainer: {
+        marginTop: 50
+    },
+    loginDetails: {
+        padding: 10,
+        color: 'white',
+        borderRadius: 25,
+        backgroundColor: '#263049',
+        width: 200,
+        alignSelf: 'center',
+        marginTop: 25,
+    },
+    buttonContainer: {
+        marginTop: 25
+    },
+    loginButton: {
+        alignSelf: 'center',
+        padding: 10,
+    },
+    loginButtonText: {
+        fontSize: 25,
+        textAlign: 'center',
+        color: 'white',
+    },
+    createAccountInput: {
+        padding: 10,
+        color: 'white',
+        borderRadius: 25,
+        backgroundColor: '#263049',
+        width: 200,
+        alignSelf: 'center',
+        marginTop: 15,
+    },
+    loginErrorMessage: {
+        alignSelf: 'center'
+    },
+    signupText: {
+        alignSelf: 'center',
+        color: 'white',
+        fontSize: 20,
+        marginTop: 20
     }
 })
