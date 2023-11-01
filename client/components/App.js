@@ -4,8 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Main from "./Main";
+import Main from "./Navigation";
 import Login from "./Login";
+import Navigation from "./Navigation";
 
 const Stack = createNativeStackNavigator()
 
@@ -51,7 +52,7 @@ export default function App(){
         {user != null ? (
             <Stack.Screen
               name={'Main'}
-              component={Main}
+              component={Navigation}
               initialParams={{ user, setUser, handleLogout }}
             />
           ) : (

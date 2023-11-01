@@ -6,7 +6,7 @@ import Matter from 'matter-js';
 
 import Box from './Box';
 
-export default class App extends React.Component {
+export default class Game extends React.Component {
     render() {
         const { width, height } = Dimensions.get("screen");
         const boxSize = Math.trunc(Math.max(width, height) * 0.075);

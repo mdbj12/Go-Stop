@@ -45,6 +45,9 @@ export default function Login({ route }){
         setIsForm(!isForm)
     }
 
+    // there is an issue where if you logout and try to log back in, it throws an error
+    // error: 'Cannot read property 'onLogin' of undefined
+    // i think when you logout and the AsyncStorage item ('loggedIn') gets removed, it removes the user from the current stage
     function handleLogin(){
         // creating userObj to change user information into a object
         const userObj = {
@@ -116,8 +119,32 @@ export default function Login({ route }){
             <ImageBackground>
                 <View>
                     <Text style={styles.title}>Go Stop!</Text>
-
+                    <TextInput
+                        onChangeText={text => setUsername(text.toLowerCase())}
+                        value={username}
+                        placeholder='Enter Username'
+                    />
+                    <TextInput
+                        onChangeText={text => setPassword(text.toLowerCase())}
+                        value={password}
+                        placeholder='Enter Password'
+                        secureTextEntry
+                    />
+                    <View>
+                        <View>
+                            <Button
+                                title='Login'
+                                onPress={handleLogin}
+                                color='white'
+                            />
+                        </View>
+                        <Button
+                            title='Create Account'
+                            onPress={showForm}
+                        />
+                    </View>
                 </View>
+                {isForm ? signupForm : null}
             </ImageBackground>
         </View>
     )
