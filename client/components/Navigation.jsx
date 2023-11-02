@@ -1,10 +1,14 @@
 import React from "react";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { StyleSheet } from "react-native";
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import Game from "./Game";
 import Account from "./Account";
+import MatchHistory from "./MatchHistory";
+import Friends from "./Friends";
 
-const Tab = createBottomTabNavigator()
+const Tab = createMaterialBottomTabNavigator()
 
 export default function Navigation({ route }){
     // route.params grabs data from page directly above
@@ -15,23 +19,55 @@ export default function Navigation({ route }){
 
     return (
         // bnottom tab navigation
-        <Tab.Navigator>
+        <Tab.Navigator
+            activeColor='#FAF3EE'
+            inactiveColor='#457B9D'
+            barStyle={{ backgroundColor: '#1D3557' }}
+        >
             <Tab.Screen
                 name="Game"
-                options={{ title: 'Game', headerShown: false }}
                 component={Game}
+                options={{
+                    title: 'Game',
+                    headerShown: false,
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name='gamepad-variant-outline' color={color} size={26} />
+                    ),
+                }}
             />
-            {/* <Tab.Screen
+            <Tab.Screen
                 name="Match History"
-            /> */}
-            {/* <Tab.Screen
+                component={MatchHistory}
+                options={{
+                    title: 'History',
+                    headerShown: false,
+                    tabBarIcon: ({ color }) => {
+                        <MaterialCommunityIcons name='timeline-clock-outline' color={color} size={26} />
+                    }
+                }}
+            />
+            <Tab.Screen
                 name="Friends"
-            /> */}
+                component={Friends}
+                options={{
+                    title: 'Friends',
+                    headerShown: false,
+                    tabBarIcon: ({ color }) => {
+                        <MaterialCommunityIcons name='handshake' color={color} size={26} />
+                    }
+                }}
+            />
             <Tab.Screen
                 name="Account Details"
-                options={{ title: 'Account', headerShown: false }}
                 component={Account}
                 initialParams={{ user, setUser, onLogout: handleLogout }}
+                options={{
+                    title: 'Account',
+                    headerShown: false,
+                    tabBarIcon: ({ color }) => (
+                        <MaterialCommunityIcons name='account' color={color} size={26} />
+                    )
+                }}
             />
         </Tab.Navigator>
     )
