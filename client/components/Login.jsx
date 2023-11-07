@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ImageBackground, Alert, Pressable } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, Text, View, TextInput, ImageBackground, Alert, Pressable, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard } from 'react-native';
 
 export default function Login({ route }){
+    // sign up form and its variables
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
@@ -17,18 +18,21 @@ export default function Login({ route }){
             onChangeText={text => setCreateUsername(text.toLowerCase())}
             value={createUsername}
             placeholder='Enter Username'
+            placeholderTextColor='#cccccc'
             style={styles.createAccountInput}
         />
         <TextInput
             onChangeText={text => setCreateEmail(text.toLowerCase())}
             value={createEmail}
             placeholder='Enter Email'
+            placeholderTextColor='#cccccc'
             style={styles.createAccountInput}
         />
         <TextInput
             onChangeText={text => setCreatePassword(text.toLowerCase())}
             value={createPassword}
             placeholder='Enter Password'
+            placeholderTextColor='#cccccc'
             style={styles.createAccountInput}
         />
         {errorMessage !== "" && <Text style={styles.loginErrorMessage}>{errorMessage}</Text>}
@@ -121,26 +125,37 @@ export default function Login({ route }){
 
     return (
         <View style={styles.loginScreen}>
-            <ImageBackground>
+            <ImageBackground
+                source={require('../assets/hwatu_january.png')}
+                style={styles.bgImage}
+            >
                 <View>
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>Go Stop!</Text>
                     </View>
-                    <View style={styles.loginContainer}>
-                        <TextInput
-                            onChangeText={text => setUsername(text.toLowerCase())}
-                            value={username}
-                            placeholder='Enter Username'
-                            style={styles.loginDetails}
-                        />
-                        <TextInput
-                            onChangeText={text => setPassword(text.toLowerCase())}
-                            value={password}
-                            placeholder='Enter Password'
-                            secureTextEntry
-                            style={styles.loginDetails}
-                        />
-                    </View>
+                    <KeyboardAvoidingView
+                        behavior={Platform.OS === 'ios' ? 'padding' : null}
+                    >
+                        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                            <View style={styles.loginContainer}>
+                                <TextInput
+                                    onChangeText={text => setUsername(text.toLowerCase())}
+                                    value={username}
+                                    placeholder='Username'
+                                    placeholderTextColor='#cccccc'
+                                    style={styles.loginDetails}
+                                    />
+                                <TextInput
+                                    onChangeText={text => setPassword(text.toLowerCase())}
+                                    value={password}
+                                    placeholder='Password'
+                                    placeholderTextColor='#cccccc'
+                                    secureTextEntry
+                                    style={styles.loginDetails}
+                                    />
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </KeyboardAvoidingView>
                     <View>
                         <View style={styles.buttonContainer}>
                             <Pressable style={styles.loginButton} onPress={handleLogin}>
@@ -160,16 +175,21 @@ export default function Login({ route }){
 
 const styles = StyleSheet.create({
     loginScreen: {
-        backgroundColor: '#D8210B',
         flex: 1,
+        justifyContent: 'flex-end'
+    },
+    bgImage: {
+        resizeMode: 'contain',
+        height: '106%',
+        // width: '100%'
     },
     titleContainer: {
-        marginTop: 100,
         padding: 15,
         alignSelf: 'center',
         backgroundColor: '#263049',
         borderRadius: 25,
         width: 300,
+        marginTop: 150
     },
     title: {
         fontSize: 40,
@@ -177,7 +197,7 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     loginContainer: {
-        marginTop: 50
+        marginTop: 350
     },
     loginDetails: {
         padding: 10,
@@ -189,16 +209,21 @@ const styles = StyleSheet.create({
         marginTop: 25,
     },
     buttonContainer: {
-        marginTop: 25
+        marginTop: 10,
     },
     loginButton: {
         alignSelf: 'center',
         padding: 10,
+        width: 250,
     },
     loginButtonText: {
         fontSize: 25,
         textAlign: 'center',
-        color: 'white',
+        color: '#FAF3EE',
+        fontWeight: 'bold',
+        // fontFamily: 'BebasNeue',
+        padding: 10,
+        backgroundColor: '#ff6600',
     },
     createAccountInput: {
         padding: 10,

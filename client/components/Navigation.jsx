@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -21,8 +20,8 @@ export default function Navigation({ route }){
         // bnottom tab navigation
         <Tab.Navigator
             activeColor='#FAF3EE'
-            inactiveColor='#457B9D'
-            barStyle={{ backgroundColor: '#1D3557' }}
+            inactiveColor='#29B2a0'
+            barStyle={{ backgroundColor: '#073376' }}
         >
             <Tab.Screen
                 name="Game"
